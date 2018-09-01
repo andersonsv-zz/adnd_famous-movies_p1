@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FamousMovies</string>
+    <string name="error_message_list">An error occurred while listing data</string>
+    <string name="error_message_detail">An error occurred in the detail of the data</string>
+    <string name="most_popular">Most popular</string>
+    <string name="top_rated">Top rated</string>
 </resources>
