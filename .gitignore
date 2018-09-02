@@ -15,6 +15,9 @@
 *.apk
 *.ap_
 
+# KeyFiles
+app/src/main/res/values/apikey.xml
+
 # Files for the ART/Dalvik VM
 *.dex
 
