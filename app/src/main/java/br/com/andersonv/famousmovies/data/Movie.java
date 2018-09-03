@@ -1,5 +1,6 @@
 package br.com.andersonv.famousmovies.data;
 
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -38,28 +39,20 @@ import android.os.Parcelable;
       ]
 }
  */
-public class Movie implements Parcelable{
+public class Movie implements Parcelable {
     //id
-    private Long id;
-    //title
-    private String title;
+    public Long id;
     //post_path
-    private String imagePath;
-    //vote_average
-    private String voteAverage;
+    public String imagePath;
 
-    public Movie(Long id, String title, String imagePath, String voteAverage) {
+    public Movie(Long id,  String imagePath) {
         this.id = id;
-        this.title = title;
         this.imagePath = imagePath;
-        this.voteAverage = voteAverage;
     }
 
     private Movie(Parcel in){
         this.id = in.readLong();
-        this.title = in.readString();
         this.imagePath = in.readString();
-        this.voteAverage = in.readString();
     }
 
     @Override
@@ -70,9 +63,7 @@ public class Movie implements Parcelable{
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeLong(id);
-        parcel.writeString(title);
         parcel.writeString(imagePath);
-        parcel.writeString(voteAverage);
     }
 
     public final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
