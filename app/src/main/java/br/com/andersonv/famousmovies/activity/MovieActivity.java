@@ -51,6 +51,8 @@ public class MovieActivity extends AppCompatActivity  implements MovieRecyclerVi
         movies.add(new Movie(2L, "http://image.tmdb.org/t/p/w185/uxzzxijgPIY7slzFvMotPv8wjKA.jpg"));
 
         rvMovies.setLayoutManager(new GridLayoutManager(this, NUMBER_OF_COLUMNS));
+        rvMovies.setHasFixedSize(true);
+
         adapter = new MovieRecyclerViewAdapter(this, movies);
       //  adapter.setClickListener(this);
         rvMovies.setAdapter(adapter);
