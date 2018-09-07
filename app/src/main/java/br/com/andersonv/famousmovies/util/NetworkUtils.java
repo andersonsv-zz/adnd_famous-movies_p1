@@ -27,7 +27,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 
-public final class NetworkUtils implements Network {
+public final class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
@@ -42,17 +42,20 @@ public final class NetworkUtils implements Network {
     final static String LANGUAGE_PARAM = "language";
     final static String PAGE_PARAM = "page";
 
-    public static URL buildMoviesTopRatedUrl(int page, Locale locale, String apiKey) {
-
-        Uri builtUri = Uri.parse(URL_MOVIES_TOP_RATED).buildUpon()
+    private static Uri buildUri(String url, int page, Locale locale, String apiKey){
+        Uri builtUri = Uri.parse(url).buildUpon()
                 .appendQueryParameter(LANGUAGE_PARAM, locale.getLanguage())
                 .appendQueryParameter(PAGE_PARAM, Integer.toString(page))
                 .appendQueryParameter(API_KEY_PARAM, apiKey)
                 .build();
 
+        return builtUri;
+    }
+
+    private static URL buildURL(Uri uri){
         URL url = null;
         try {
-            url = new URL(builtUri.toString());
+            url = new URL(uri.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -62,26 +65,22 @@ public final class NetworkUtils implements Network {
         return url;
     }
 
-    /**
-     * Builds the URL used to talk to the weather server using latitude and longitude of a
-     * location.
-     *
-     * @param lat The latitude of the location
-     * @param lon The longitude of the location
-     * @return The Url to use to query the weather server.
-     */
+    public static URL buildMoviesTopRatedUrl(int page, Locale locale, String apiKey) {
+        Uri builtUri = buildUri(URL_MOVIES_TOP_RATED, page, locale, apiKey);
+        return buildURL(builtUri);
+    }
+
+    public static URL buildMoviesMostPopularUrl(int page, Locale locale, String apiKey) {
+        Uri builtUri = buildUri(URL_MOVIES_POPULAR, page, locale, apiKey);
+        return buildURL(builtUri);
+    }
+
+
     public static URL buildUrl(Double lat, Double lon) {
         /** This will be implemented in a future lesson **/
         return null;
     }
 
-    /**
-     * This method returns the entire result from the HTTP response.
-     *
-     * @param url The URL to fetch the HTTP response from.
-     * @return The contents of the HTTP response.
-     * @throws IOException Related to network and stream reading
-     */
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
@@ -99,10 +98,5 @@ public final class NetworkUtils implements Network {
         } finally {
             urlConnection.disconnect();
         }
-    }
-
-    @Override
-    public URL buildURIMovies(String service, int page, Locale locale, String apiKey) {
-        return null;
     }
 }
