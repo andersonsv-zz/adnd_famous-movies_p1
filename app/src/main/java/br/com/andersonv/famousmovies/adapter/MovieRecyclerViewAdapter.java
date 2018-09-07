@@ -39,7 +39,10 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Movie movie = mData.get(position);
-        Picasso.with(mInflater.getContext()).load(movie.imagePath).into(holder.ivMovieImage);
+        Picasso.with(mInflater.getContext())
+                .load(movie.imagePath)
+                .placeholder(R.drawable.ic_photo_camera_white_48dp)
+                .into(holder.ivMovieImage);
     }
 
     @Override
