@@ -44,6 +44,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                     .into(ivPoster);
 
             tvTitle.setText(movie.getTitle());
+            this.setTitle(movie.getTitle());
             tvRelase.setText(movie.getReleaseDate());
             tvVoteAverage.setText(String.valueOf(movie.getVoteAverage()));
             tvOverview.setText(movie.getOverview());

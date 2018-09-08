@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -41,6 +42,8 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
+
+        this.setTitle(R.string.top_rated);
 
         mLoadingIndicator = findViewById(R.id.pbIndicador);
         rvMovies = findViewById(R.id.rvMovies);
@@ -78,12 +81,16 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         int id = item.getItemId();
 
         if (id == R.id.list_movies_toprated) {
+            this.setTitle(R.string.top_rated);
             loadMovieData(MovieSearch.TOP_RATED);
+
             return true;
         }
 
         if (id == R.id.list_movies_mostpopular) {
+            this.setTitle(R.string.most_popular);
             loadMovieData(MovieSearch.MOST_POPULAR);
+
             return true;
         }
 
