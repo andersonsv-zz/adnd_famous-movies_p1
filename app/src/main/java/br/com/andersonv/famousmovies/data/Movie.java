@@ -3,27 +3,22 @@ package br.com.andersonv.famousmovies.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Property;
 
 public class Movie implements  Parcelable {
-
-
-
-        //id
-    public Long id;
+    //id
+    private final Long id;
     //post_path
-    public String posterPath;
+    private final String posterPath;
     //title
-    public String title;
+    private final String title;
     //backdrop_path
-    public String backdropPath;
+    private final String backdropPath;
     //release_date
-    public String releaseDate;
+    private final String releaseDate;
     //overview
-    public String overview;
+    private final String overview;
     //vote_average
-    public Double voteAverage;
-
+    private final Double voteAverage;
 
     public Movie(Long id, String posterPath, String title, String backdropPath, String releaseDate, String overview, Double voteAverage) {
         this.id = id;
@@ -71,5 +66,29 @@ public class Movie implements  Parcelable {
         parcel.writeString(releaseDate);
         parcel.writeString(overview);
         parcel.writeDouble(voteAverage);
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getBackdropPath() {
+        return backdropPath;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public Double getVoteAverage() {
+        return voteAverage;
     }
 }

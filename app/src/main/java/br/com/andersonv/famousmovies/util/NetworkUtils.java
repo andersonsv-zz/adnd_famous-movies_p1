@@ -30,9 +30,9 @@ import br.com.andersonv.famousmovies.data.MovieSearch;
 
 public final class NetworkUtils {
 
-    final static String API_KEY_PARAM = "api_key";
-    final static String LANGUAGE_PARAM = "language";
-    final static String PAGE_PARAM = "page";
+    private final static String API_KEY_PARAM = "api_key";
+    private final static String LANGUAGE_PARAM = "language";
+    private final static String PAGE_PARAM = "page";
     private static final String TAG = NetworkUtils.class.getSimpleName();
     private static final String URL_MOVIES = "https://api.themoviedb.org/3/movie/";
     private static final String TOP_RATED = "top_rated";
@@ -46,6 +46,8 @@ public final class NetworkUtils {
                 .appendQueryParameter(PAGE_PARAM, Integer.toString(page))
                 .appendQueryParameter(API_KEY_PARAM, apiKey)
                 .build();
+
+        Log.d(TAG, "builtURI" + builtUri.toString());
 
         return builtUri;
     }

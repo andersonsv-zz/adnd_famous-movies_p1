@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,7 +30,6 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
 
     //component config
     private static final int NUMBER_OF_COLUMNS = 2;
-    private MovieRecyclerViewAdapter adapter;
     private List<Movie> movies = new ArrayList<>();
     //components
     private TextView mErrorMessageDisplay;
@@ -44,12 +42,12 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
 
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.pbIndicador);
-        rvMovies = (RecyclerView) findViewById(R.id.rvMovies);
-        mErrorMessageDisplay = (TextView) findViewById(R.id.tvErrorMessage);
+        mLoadingIndicator = findViewById(R.id.pbIndicador);
+        rvMovies = findViewById(R.id.rvMovies);
+        mErrorMessageDisplay = findViewById(R.id.tvErrorMessage);
 
         if (savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
-            movies = new ArrayList<Movie>(movies);
+            movies = new ArrayList<>(movies);
         } else {
             movies = savedInstanceState.getParcelableArrayList("movies");
         }
@@ -59,6 +57,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         rvMovies.setHasFixedSize(true);
 
         loadMovieData(MovieSearch.TOP_RATED);
+
     }
 
 
@@ -121,7 +120,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         startActivity(intent);
     }
 
-    public class MovieTask extends AsyncTask<String, Void, List<Movie>> {
+    private class MovieTask extends AsyncTask<String, Void, List<Movie>> {
 
         @Override
         protected void onPreExecute() {
@@ -146,7 +145,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
                 String jsonWeatherResponse = NetworkUtils
                         .getResponseFromHttpUrl(movieRequestUrl);
 
-                movies = MovieJsonUtils.getMovieStringsFromJson(MovieActivity.this, jsonWeatherResponse);
+                movies = MovieJsonUtils.getMovieStringsFromJson(jsonWeatherResponse);
 
                 return movies;
 
@@ -164,7 +163,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
             if (moviesData != null) {
                 showMovieDataView();
 
-                adapter = new MovieRecyclerViewAdapter(context, moviesData, MovieActivity.this);
+                MovieRecyclerViewAdapter adapter = new MovieRecyclerViewAdapter(context, moviesData, MovieActivity.this);
                 rvMovies.setAdapter(adapter);
 
             } else {

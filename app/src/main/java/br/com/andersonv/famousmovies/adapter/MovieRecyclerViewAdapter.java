@@ -18,9 +18,9 @@ import br.com.andersonv.famousmovies.data.Movie;
 
 public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecyclerViewAdapter.ViewHolder> {
 
-    private static String IMAGE_URL = "http://image.tmdb.org/t/p/w185/";
-    private List<Movie> mData;
-    private LayoutInflater mInflater;
+    private static final String IMAGE_URL = "http://image.tmdb.org/t/p/w185/";
+    private final List<Movie> mData;
+    private final LayoutInflater mInflater;
     private final MovieRecyclerOnClickHandler mClickHandler;
 
     public interface MovieRecyclerOnClickHandler {
@@ -46,7 +46,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Movie movie = mData.get(position);
         Picasso.with(mInflater.getContext())
-                .load(IMAGE_URL + movie.posterPath)
+                .load(IMAGE_URL + movie.getPosterPath())
                 .into(holder.ivMovieImage);
 
     }
@@ -58,7 +58,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView ivMovieImage;
+        final ImageView ivMovieImage;
 
         ViewHolder(View itemView) {
             super(itemView);

@@ -15,8 +15,6 @@
  */
 package br.com.andersonv.famousmovies.util;
 
-import android.content.Context;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +30,7 @@ import br.com.andersonv.famousmovies.data.Movie;
 public final class MovieJsonUtils {
 
 
-    public static List<Movie> getMovieStringsFromJson(Context context, String movieJsonStr)
+    public static List<Movie> getMovieStringsFromJson(String movieJsonStr)
             throws JSONException {
 
         final String RESULTS = "results";
