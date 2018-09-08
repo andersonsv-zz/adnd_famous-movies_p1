@@ -109,7 +109,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
 
         final String apiKey = getResources().getString(R.string.moviedb);
 
-        new MovieTask().execute(movieSearch.name(), "1", Locale.getDefault().getDisplayLanguage(), apiKey);
+        new MovieTask().execute(movieSearch.name(), "1", Locale.getDefault().toString().replace("_", "-"), apiKey);
     }
 
     @Override
