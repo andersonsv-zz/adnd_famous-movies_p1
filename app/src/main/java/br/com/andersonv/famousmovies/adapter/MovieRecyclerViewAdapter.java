@@ -23,6 +23,8 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
+    private static String IMAGE_URL = "http://image.tmdb.org/t/p/w185/";
+
     public MovieRecyclerViewAdapter(Context context, List<Movie> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
@@ -40,8 +42,8 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Movie movie = mData.get(position);
         Picasso.with(mInflater.getContext())
-                .load(movie.imagePath)
-                .placeholder(R.drawable.ic_photo_camera_white_48dp)
+                .load(IMAGE_URL + movie.posterPath)
+                .placeholder(R.drawable.ic_photo_camera_black_24dp)
                 .into(holder.ivMovieImage);
     }
 

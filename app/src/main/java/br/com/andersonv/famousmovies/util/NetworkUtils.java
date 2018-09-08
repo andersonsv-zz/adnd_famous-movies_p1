@@ -32,8 +32,8 @@ public final class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     private static final String URL_MOVIES = "https://api.themoviedb.org/3/movie/";
-    private static final String TOP_RATED = "top_rated/";
-    private static final String POPULAR = "popular/";
+    private static final String TOP_RATED = "top_rated";
+    private static final String POPULAR = "popular";
 
     private static final String URL_MOVIES_TOP_RATED = URL_MOVIES + TOP_RATED;
     private static final String URL_MOVIES_POPULAR = URL_MOVIES + POPULAR;
@@ -42,9 +42,9 @@ public final class NetworkUtils {
     final static String LANGUAGE_PARAM = "language";
     final static String PAGE_PARAM = "page";
 
-    private static Uri buildUri(String url, int page, Locale locale, String apiKey){
+    private static Uri buildUri(String url, int page, String locale, String apiKey){
         Uri builtUri = Uri.parse(url).buildUpon()
-                .appendQueryParameter(LANGUAGE_PARAM, locale.getLanguage())
+                .appendQueryParameter(LANGUAGE_PARAM, locale)
                 .appendQueryParameter(PAGE_PARAM, Integer.toString(page))
                 .appendQueryParameter(API_KEY_PARAM, apiKey)
                 .build();
@@ -65,20 +65,14 @@ public final class NetworkUtils {
         return url;
     }
 
-    public static URL buildMoviesTopRatedUrl(int page, Locale locale, String apiKey) {
+    public static URL buildMoviesTopRatedUrl(int page, String locale, String apiKey) {
         Uri builtUri = buildUri(URL_MOVIES_TOP_RATED, page, locale, apiKey);
         return buildURL(builtUri);
     }
 
-    public static URL buildMoviesMostPopularUrl(int page, Locale locale, String apiKey) {
+    public static URL buildMoviesMostPopularUrl(int page, String locale, String apiKey) {
         Uri builtUri = buildUri(URL_MOVIES_POPULAR, page, locale, apiKey);
         return buildURL(builtUri);
-    }
-
-
-    public static URL buildUrl(Double lat, Double lon) {
-        /** This will be implemented in a future lesson **/
-        return null;
     }
 
     public static String getResponseFromHttpUrl(URL url) throws IOException {

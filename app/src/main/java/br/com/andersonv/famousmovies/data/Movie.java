@@ -43,16 +43,16 @@ public class Movie implements Parcelable {
     //id
     public Long id;
     //post_path
-    public String imagePath;
+    public String posterPath;
 
-    public Movie(Long id,  String imagePath) {
+    public Movie(Long id,  String posterPath) {
         this.id = id;
-        this.imagePath = imagePath;
+        this.posterPath = posterPath;
     }
 
     private Movie(Parcel in){
         this.id = in.readLong();
-        this.imagePath = in.readString();
+        this.posterPath = in.readString();
     }
 
     @Override
@@ -63,7 +63,7 @@ public class Movie implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeLong(id);
-        parcel.writeString(imagePath);
+        parcel.writeString(posterPath);
     }
 
     public final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
