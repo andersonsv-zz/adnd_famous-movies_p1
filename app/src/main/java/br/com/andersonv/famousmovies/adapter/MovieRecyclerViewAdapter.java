@@ -21,12 +21,18 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     private static String IMAGE_URL = "http://image.tmdb.org/t/p/w185/";
     private List<Movie> mData;
     private LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
+    private final MovieRecyclerOnClickHandler mClickHandler;
 
-    public MovieRecyclerViewAdapter(Context context, List<Movie> data) {
+    public interface MovieRecyclerOnClickHandler {
+        void onClick(Movie movie);
+    }
+    //
+    public MovieRecyclerViewAdapter(Context context, List<Movie> data, MovieRecyclerOnClickHandler clickHandler) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
+        this.mClickHandler = clickHandler;
     }
+
 
     @Override
     @NonNull
@@ -42,6 +48,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         Picasso.with(mInflater.getContext())
                 .load(IMAGE_URL + movie.posterPath)
                 .into(holder.ivMovieImage);
+
     }
 
     @Override
@@ -49,17 +56,6 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         return mData.size();
     }
 
-    Movie getItem(int id) {
-        return mData.get(id);
-    }
-
-    void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView ivMovieImage;
@@ -72,7 +68,9 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
         @Override
         public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+                int adapterPosition = getAdapterPosition();
+                Movie movie = mData.get(adapterPosition);
+                mClickHandler.onClick(movie);
         }
     }
 }

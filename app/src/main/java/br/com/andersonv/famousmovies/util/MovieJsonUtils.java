@@ -38,6 +38,11 @@ public final class MovieJsonUtils {
         final String RESULTS = "results";
         final String ID = "id";
         final String IMAGE_PATH = "poster_path";
+        final String TITLE = "title";
+        final String BACKDROP_PATH = "backdrop_path";
+        final String RELEASE_DATE = "release_date";
+        final String OVERVIEW = "overview";
+        final String VOTE_AVERAGE = "vote_average";
 
         final String MESSAGE_CODE = "status_code";
 
@@ -60,13 +65,23 @@ public final class MovieJsonUtils {
 
             Long id;
             String posterPath;
+            String title;
+            String backdropPath;
+            String releaseDate;
+            String overview;
+            Double voteAverage;
 
             JSONObject movieObject = movieArray.getJSONObject(i);
 
             id = movieObject.getLong(ID);
             posterPath = movieObject.getString(IMAGE_PATH);
+            title = movieObject.getString(TITLE);
+            backdropPath = movieObject.getString(BACKDROP_PATH);
+            releaseDate = movieObject.getString(RELEASE_DATE);
+            overview = movieObject.getString(OVERVIEW);
+            voteAverage = movieObject.getDouble(VOTE_AVERAGE);
 
-            movies.add(new Movie(id, posterPath));
+            movies.add(new Movie(id, posterPath, title, backdropPath, releaseDate, overview, voteAverage));
 
         }
         return movies;

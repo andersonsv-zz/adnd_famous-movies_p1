@@ -3,69 +3,59 @@ package br.com.andersonv.famousmovies.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Property;
 
-/**
- * -
- * <p>
- * The moviebd - [API KEY] must be inside the file values/apikey.xml
- * <p>
- * https://api.themoviedb.org/3/movie/popular?api_key=[moviebd]&language=en-US
- * https://api.themoviedb.org/3/movie/top_rated?api_key=[moviebd]&language=en-US
- * {
- * "page": 1,
- * "total_results": 6157,
- * "total_pages": 308,
- * "results": [
- * {
- * "vote_count": 1863,
- * "id": 19404,
- * "video": false,
- * "vote_average": 9.3,
- * "title": "Dilwale Dulhania Le Jayenge",
- * "popularity": 12.095,
- * "poster_path": "/uC6TTUhPpQCmgldGyYveKRAu8JN.jpg",
- * "original_language": "hi",
- * "original_title": "दिलवाले दुल्हनिया ले जायेंगे",
- * "genre_ids": [
- * 35,
- * 18,
- * 10749
- * ],
- * "backdrop_path": "/nl79FQ8xWZkhL3rDr1v2RFFR6J0.jpg",
- * "adult": false,
- * "overview": "Raj is a rich, carefree, happy-go-lucky second generation NRI. Simran is the daughter of Chaudhary Baldev Singh, who in spite of being an NRI is very strict about adherence to Indian values. Simran has left for India to be married to her childhood fiancé. Raj leaves for India with a mission at his hands, to claim his lady love under the noses of her whole family. Thus begins a saga.",
- * "release_date": "1995-10-20"
- * },
- * [...]
- * ]
- * }
- */
-public class Movie implements Parcelable {
-    public final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
-        @Override
-        public Movie createFromParcel(Parcel parcel) {
-            return new Movie(parcel);
-        }
+public class Movie implements  Parcelable {
 
-        @Override
-        public Movie[] newArray(int i) {
-            return new Movie[i];
-        }
-    };
-    //id
+
+
+        //id
     public Long id;
     //post_path
     public String posterPath;
+    //title
+    public String title;
+    //backdrop_path
+    public String backdropPath;
+    //release_date
+    public String releaseDate;
+    //overview
+    public String overview;
+    //vote_average
+    public Double voteAverage;
 
-    public Movie(Long id, String posterPath) {
+
+    public Movie(Long id, String posterPath, String title, String backdropPath, String releaseDate, String overview, Double voteAverage) {
         this.id = id;
         this.posterPath = posterPath;
+        this.title = title;
+        this.backdropPath = backdropPath;
+        this.releaseDate = releaseDate;
+        this.overview = overview;
+        this.voteAverage = voteAverage;
     }
 
     private Movie(Parcel in) {
         this.id = in.readLong();
         this.posterPath = in.readString();
+        this.title = in.readString();
+        this.backdropPath = in.readString();
+        this.releaseDate = in.readString();
+        this.overview = in.readString();
+        this.voteAverage = in.readDouble();
     }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
     @Override
     public int describeContents() {
@@ -76,5 +66,10 @@ public class Movie implements Parcelable {
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeLong(id);
         parcel.writeString(posterPath);
+        parcel.writeString(title);
+        parcel.writeString(backdropPath);
+        parcel.writeString(releaseDate);
+        parcel.writeString(overview);
+        parcel.writeDouble(voteAverage);
     }
 }

@@ -1,6 +1,7 @@
 package br.com.andersonv.famousmovies.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -26,7 +27,7 @@ import br.com.andersonv.famousmovies.data.MovieSearch;
 import br.com.andersonv.famousmovies.util.MovieJsonUtils;
 import br.com.andersonv.famousmovies.util.NetworkUtils;
 
-public class MovieActivity extends AppCompatActivity implements MovieRecyclerViewAdapter.ItemClickListener {
+public class MovieActivity extends AppCompatActivity implements MovieRecyclerViewAdapter.MovieRecyclerOnClickHandler {
 
     //component config
     private static final int NUMBER_OF_COLUMNS = 2;
@@ -90,13 +91,6 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onItemClick(View view, int position) {
-
-        Toast.makeText(view.getContext(), "Item clicado" + position ,Toast.LENGTH_LONG);
-
-    }
-
     private void showMovieDataView() {
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
         rvMovies.setVisibility(View.VISIBLE);
@@ -117,6 +111,14 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         final String apiKey = getResources().getString(R.string.moviedb);
 
         new MovieTask().execute(movieSearch.name(), "1", Locale.getDefault().getDisplayLanguage(), apiKey);
+    }
+
+    @Override
+    public void onClick(Movie movie) {
+        Intent intent = new Intent(MovieActivity.this, MovieDetailActivity.class);
+        intent.putExtra(Intent.EXTRA_INTENT, movie);
+
+        startActivity(intent);
     }
 
     public class MovieTask extends AsyncTask<String, Void, List<Movie>> {
@@ -162,7 +164,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
             if (moviesData != null) {
                 showMovieDataView();
 
-                adapter = new MovieRecyclerViewAdapter(context, moviesData);
+                adapter = new MovieRecyclerViewAdapter(context, moviesData, MovieActivity.this);
                 rvMovies.setAdapter(adapter);
 
             } else {
