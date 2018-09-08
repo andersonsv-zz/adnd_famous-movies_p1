@@ -16,9 +16,11 @@
 package br.com.andersonv.famousmovies.util;
 
 import android.content.Context;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +48,7 @@ public final class MovieJsonUtils {
         if (movieJson.has(MESSAGE_CODE)) {
             int errorCode = movieJson.getInt(MESSAGE_CODE);
 
-            if(errorCode != 0){
+            if (errorCode != 0) {
                 return null;
             }
         }

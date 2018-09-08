@@ -16,7 +16,6 @@
 package br.com.andersonv.famousmovies.util;
 
 
-
 public final class MovieUtils {
 
     private static final String LOG_TAG = MovieUtils.class.getSimpleName();

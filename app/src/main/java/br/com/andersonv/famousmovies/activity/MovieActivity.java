@@ -2,10 +2,9 @@ package br.com.andersonv.famousmovies.activity;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Parcelable;
-import android.os.PersistableBundle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -13,32 +12,31 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
 import br.com.andersonv.famousmovies.R;
 import br.com.andersonv.famousmovies.adapter.MovieRecyclerViewAdapter;
 import br.com.andersonv.famousmovies.data.Movie;
+import br.com.andersonv.famousmovies.data.MovieSearch;
 import br.com.andersonv.famousmovies.util.MovieJsonUtils;
 import br.com.andersonv.famousmovies.util.NetworkUtils;
 
-public class MovieActivity extends AppCompatActivity  implements MovieRecyclerViewAdapter.ItemClickListener {
+public class MovieActivity extends AppCompatActivity implements MovieRecyclerViewAdapter.ItemClickListener {
 
+    //component config
+    private static final int NUMBER_OF_COLUMNS = 2;
     private MovieRecyclerViewAdapter adapter;
     private List<Movie> movies = new ArrayList<>();
-
     //components
     private TextView mErrorMessageDisplay;
     private ProgressBar mLoadingIndicator;
     private RecyclerView rvMovies;
     private Context context;
-
-    //component config
-    private static final int NUMBER_OF_COLUMNS = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,23 +44,20 @@ public class MovieActivity extends AppCompatActivity  implements MovieRecyclerVi
         setContentView(R.layout.activity_movie);
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pbIndicador);
+        rvMovies = (RecyclerView) findViewById(R.id.rvMovies);
+        mErrorMessageDisplay = (TextView) findViewById(R.id.tvErrorMessage);
 
-        if(savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
+        if (savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
             movies = new ArrayList<Movie>(movies);
-        }
-        else {
+        } else {
             movies = savedInstanceState.getParcelableArrayList("movies");
         }
-
-        rvMovies = (RecyclerView) findViewById(R.id.rvMovies);
-
-        mErrorMessageDisplay = (TextView) findViewById(R.id.tvErroMessage);
 
         context = this;
         rvMovies.setLayoutManager(new GridLayoutManager(this, NUMBER_OF_COLUMNS));
         rvMovies.setHasFixedSize(true);
 
-        loadMovieData();
+        loadMovieData(MovieSearch.TOP_RATED);
     }
 
 
@@ -83,12 +78,12 @@ public class MovieActivity extends AppCompatActivity  implements MovieRecyclerVi
         int id = item.getItemId();
 
         if (id == R.id.list_movies_toprated) {
-            loadMovieData();
+            loadMovieData(MovieSearch.TOP_RATED);
             return true;
         }
 
         if (id == R.id.list_movies_mostpopular) {
-            loadMovieData();
+            loadMovieData(MovieSearch.MOST_POPULAR);
             return true;
         }
 
@@ -97,6 +92,8 @@ public class MovieActivity extends AppCompatActivity  implements MovieRecyclerVi
 
     @Override
     public void onItemClick(View view, int position) {
+
+        Toast.makeText(view.getContext(), "Item clicado" + position ,Toast.LENGTH_LONG);
 
     }
 
@@ -110,16 +107,16 @@ public class MovieActivity extends AppCompatActivity  implements MovieRecyclerVi
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
-    private void loadMovieData() {
+    private void loadMovieData(MovieSearch movieSearch) {
 
         showMovieDataView();
 
-        //clean lista
+        //clean list
         rvMovies.setAdapter(null);
 
-        final  String apiKey = getResources().getString(R.string.moviedb);
+        final String apiKey = getResources().getString(R.string.moviedb);
 
-        new MovieTask().execute("1", Locale.getDefault().getDisplayLanguage(), apiKey);
+        new MovieTask().execute(movieSearch.name(), "1", Locale.getDefault().getDisplayLanguage(), apiKey);
     }
 
     public class MovieTask extends AsyncTask<String, Void, List<Movie>> {
@@ -137,18 +134,17 @@ public class MovieActivity extends AppCompatActivity  implements MovieRecyclerVi
                 return null;
             }
 
-            //TODO - receive movie category search
+            MovieSearch movieSearch = MovieSearch.valueOf(params[0]);
+            Integer page = Integer.parseInt(params[1]);
+            String locale = params[2];
+            String apiKey = params[3];
 
-            Integer page = Integer.parseInt(params[0]);
-            String locale = params[1];
-            String apiKey = params[2];
-
-            URL movieRequestUrl = NetworkUtils.buildMoviesTopRatedUrl(page,locale,apiKey);
+            URL movieRequestUrl = NetworkUtils.buildMovies(movieSearch, page, locale, apiKey);
             try {
                 String jsonWeatherResponse = NetworkUtils
                         .getResponseFromHttpUrl(movieRequestUrl);
 
-                List<Movie> movies = MovieJsonUtils.getMovieStringsFromJson(MovieActivity.this, jsonWeatherResponse);
+                movies = MovieJsonUtils.getMovieStringsFromJson(MovieActivity.this, jsonWeatherResponse);
 
                 return movies;
 
@@ -159,15 +155,14 @@ public class MovieActivity extends AppCompatActivity  implements MovieRecyclerVi
         }
 
         @Override
-        protected void onPostExecute(List<Movie> weatherData) {
+        protected void onPostExecute(List<Movie> moviesData) {
 
             mLoadingIndicator.setVisibility(View.INVISIBLE);
 
-            if (weatherData != null) {
+            if (moviesData != null) {
                 showMovieDataView();
 
-                adapter = new MovieRecyclerViewAdapter(context, weatherData);
-                //  adapter.setClickListener(this);
+                adapter = new MovieRecyclerViewAdapter(context, moviesData);
                 rvMovies.setAdapter(adapter);
 
             } else {

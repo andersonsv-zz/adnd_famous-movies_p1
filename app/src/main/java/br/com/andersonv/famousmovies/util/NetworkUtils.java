@@ -23,26 +23,24 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Locale;
 import java.util.Scanner;
+
+import br.com.andersonv.famousmovies.data.MovieSearch;
 
 
 public final class NetworkUtils {
 
-    private static final String TAG = NetworkUtils.class.getSimpleName();
-
-    private static final String URL_MOVIES = "https://api.themoviedb.org/3/movie/";
-    private static final String TOP_RATED = "top_rated";
-    private static final String POPULAR = "popular";
-
-    private static final String URL_MOVIES_TOP_RATED = URL_MOVIES + TOP_RATED;
-    private static final String URL_MOVIES_POPULAR = URL_MOVIES + POPULAR;
-
     final static String API_KEY_PARAM = "api_key";
     final static String LANGUAGE_PARAM = "language";
     final static String PAGE_PARAM = "page";
+    private static final String TAG = NetworkUtils.class.getSimpleName();
+    private static final String URL_MOVIES = "https://api.themoviedb.org/3/movie/";
+    private static final String TOP_RATED = "top_rated";
+    private static final String POPULAR = "popular";
+    private static final String URL_MOVIES_TOP_RATED = URL_MOVIES + TOP_RATED;
+    private static final String URL_MOVIES_POPULAR = URL_MOVIES + POPULAR;
 
-    private static Uri buildUri(String url, int page, String locale, String apiKey){
+    private static Uri buildUri(String url, int page, String locale, String apiKey) {
         Uri builtUri = Uri.parse(url).buildUpon()
                 .appendQueryParameter(LANGUAGE_PARAM, locale)
                 .appendQueryParameter(PAGE_PARAM, Integer.toString(page))
@@ -52,7 +50,7 @@ public final class NetworkUtils {
         return builtUri;
     }
 
-    private static URL buildURL(Uri uri){
+    private static URL buildURL(Uri uri) {
         URL url = null;
         try {
             url = new URL(uri.toString());
@@ -65,13 +63,15 @@ public final class NetworkUtils {
         return url;
     }
 
-    public static URL buildMoviesTopRatedUrl(int page, String locale, String apiKey) {
-        Uri builtUri = buildUri(URL_MOVIES_TOP_RATED, page, locale, apiKey);
-        return buildURL(builtUri);
-    }
+    public static URL buildMovies(MovieSearch movieSearch, int page, String locale, String apiKey) {
 
-    public static URL buildMoviesMostPopularUrl(int page, String locale, String apiKey) {
-        Uri builtUri = buildUri(URL_MOVIES_POPULAR, page, locale, apiKey);
+        String search = URL_MOVIES_TOP_RATED;
+
+        if (MovieSearch.MOST_POPULAR.equals(movieSearch)) {
+            search = URL_MOVIES_POPULAR;
+        }
+
+        Uri builtUri = buildUri(search, page, locale, apiKey);
         return buildURL(builtUri);
     }
 
