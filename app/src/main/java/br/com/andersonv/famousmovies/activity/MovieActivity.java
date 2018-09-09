@@ -121,7 +121,11 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
 
     @Override
     public void onClick(Movie movie) {
-        Intent intent = new Intent(MovieActivity.this, MovieDetailActivity.class);
+
+        Context context = this;
+        Class destinationClass = MovieDetailActivity.class;
+
+        Intent intent = new Intent(context, destinationClass);
         intent.putExtra(Intent.EXTRA_INTENT, movie);
 
         startActivity(intent);
