@@ -2,18 +2,20 @@ package br.com.andersonv.famousmovies.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
     private List<Movie> movies = new ArrayList<>();
     //components
     private TextView mErrorMessageDisplay;
+    private LinearLayout mLlInternetAccessError;
     private ProgressBar mLoadingIndicator;
     private RecyclerView rvMovies;
     private Context context;
@@ -48,6 +51,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         mLoadingIndicator = findViewById(R.id.pbIndicador);
         rvMovies = findViewById(R.id.rvMovies);
         mErrorMessageDisplay = findViewById(R.id.tvErrorMessage);
+        mLlInternetAccessError = findViewById(R.id.llInternetAccessError);
 
         if (savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
             movies = new ArrayList<>(movies);
@@ -100,6 +104,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
     private void showMovieDataView() {
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
         rvMovies.setVisibility(View.VISIBLE);
+        mLlInternetAccessError.setVisibility(View.INVISIBLE);
     }
 
     private void showErrorMessage() {
@@ -114,9 +119,15 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         //clean list
         rvMovies.setAdapter(null);
 
-        final String apiKey = getResources().getString(R.string.moviedb);
+        //check internet access
+        if(!NetworkUtils.isNetworkConnected(this)) {
+            mLlInternetAccessError.setVisibility(View.VISIBLE);
+            mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+        }else {
+            final String apiKey = getResources().getString(R.string.moviedb);
 
-        new MovieTask().execute(movieSearch.name(), "1", Locale.getDefault().toString().replace("_", "-"), apiKey);
+            new MovieTask().execute(movieSearch.name(), "1", Locale.getDefault().toString().replace("_", "-"), apiKey);
+        }
     }
 
     @Override
@@ -181,5 +192,6 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
                 showErrorMessage();
             }
         }
+
     }
 }

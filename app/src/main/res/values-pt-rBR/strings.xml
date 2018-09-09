@@ -6,4 +6,8 @@
     <string name="top_rated">Mais votados</string>
     <string name="content_description_img_ivBackdrop">Imagem de fundo do filme</string>
     <string name="content_description_img_ivPoster">Poster do filme</string>
+
+    <string name="offline">Sem internet</string>
+    <string name="offline_msg">Verifique sua conexão com a internet e tente novamente</string>
+
 </resources>
