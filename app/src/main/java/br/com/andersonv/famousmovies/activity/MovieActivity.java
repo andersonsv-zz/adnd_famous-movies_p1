@@ -2,7 +2,6 @@ package br.com.andersonv.famousmovies.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -26,13 +25,18 @@ import br.com.andersonv.famousmovies.R;
 import br.com.andersonv.famousmovies.adapter.MovieRecyclerViewAdapter;
 import br.com.andersonv.famousmovies.data.Movie;
 import br.com.andersonv.famousmovies.data.MovieSearch;
+import br.com.andersonv.famousmovies.network.MovieTask;
+import br.com.andersonv.famousmovies.network.OnTaskCompleted;
 import br.com.andersonv.famousmovies.util.MovieJsonUtils;
 import br.com.andersonv.famousmovies.util.NetworkUtils;
 
-public class MovieActivity extends AppCompatActivity implements MovieRecyclerViewAdapter.MovieRecyclerOnClickHandler {
+public class MovieActivity extends AppCompatActivity implements MovieRecyclerViewAdapter.MovieRecyclerOnClickHandler, OnTaskCompleted{
 
     //component config
-    private static final int NUMBER_OF_COLUMNS = 2;
+    private static final int NUMBER_OF_COLUMS = 2;
+    private static final String SAVE_STATE_OBJECT_NAME = "movies";
+    private String locale;
+
     private List<Movie> movies = new ArrayList<>();
     //components
     private TextView mErrorMessageDisplay;
@@ -53,14 +57,14 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         mErrorMessageDisplay = findViewById(R.id.tvErrorMessage);
         mLlInternetAccessError = findViewById(R.id.llInternetAccessError);
 
-        if (savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
+        if (savedInstanceState == null || !savedInstanceState.containsKey(SAVE_STATE_OBJECT_NAME)) {
             movies = new ArrayList<>(movies);
         } else {
-            movies = savedInstanceState.getParcelableArrayList("movies");
+            movies = savedInstanceState.getParcelableArrayList(SAVE_STATE_OBJECT_NAME);
         }
 
         context = this;
-        rvMovies.setLayoutManager(new GridLayoutManager(this, NUMBER_OF_COLUMNS));
+        rvMovies.setLayoutManager(new GridLayoutManager(this, NUMBER_OF_COLUMS));
         rvMovies.setHasFixedSize(true);
 
         loadMovieData(MovieSearch.TOP_RATED);
@@ -70,7 +74,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList("movies", (ArrayList<? extends Parcelable>) movies);
+        outState.putParcelableArrayList(SAVE_STATE_OBJECT_NAME, (ArrayList<? extends Parcelable>) movies);
         super.onSaveInstanceState(outState);
     }
 
@@ -123,10 +127,26 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         if(!NetworkUtils.isNetworkConnected(this)) {
             mLlInternetAccessError.setVisibility(View.VISIBLE);
             mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+
+          /*  Snackbar snackbar = Snackbar.
+                    .make(, "Message is deleted", Snackbar.LENGTH_LONG)
+                    .setAction("UNDO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Message is restored!", Snackbar.LENGTH_SHORT);
+                            snackbar1.show();
+                        }
+                    });
+
+            snackbar.show();*/
         }else {
             final String apiKey = getResources().getString(R.string.moviedb);
 
-            new MovieTask().execute(movieSearch.name(), "1", Locale.getDefault().toString().replace("_", "-"), apiKey);
+            locale = Locale.getDefault().toString().replace("_", "-");
+
+            mLoadingIndicator.setVisibility(View.VISIBLE);
+            MovieTask task = new MovieTask(MovieActivity.this, movieSearch, 1, locale, apiKey);
+            task.execute();
         }
     }
 
@@ -142,7 +162,23 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         startActivity(intent);
     }
 
-    private class MovieTask extends AsyncTask<String, Void, List<Movie>> {
+
+    @Override
+    public void onTaskCompleted(List<Movie> response) {
+        mLoadingIndicator.setVisibility(View.INVISIBLE);
+
+        if (response != null) {
+            showMovieDataView();
+
+            MovieRecyclerViewAdapter adapter = new MovieRecyclerViewAdapter(context, response, MovieActivity.this);
+            rvMovies.setAdapter(adapter);
+
+        } else {
+            showErrorMessage();
+        }
+    }
+
+    /*private class MovieTask extends AsyncTask<String, Void, List<Movie>> {
 
         @Override
         protected void onPreExecute() {
@@ -192,6 +228,5 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
                 showErrorMessage();
             }
         }
-
-    }
+    }*/
 }
