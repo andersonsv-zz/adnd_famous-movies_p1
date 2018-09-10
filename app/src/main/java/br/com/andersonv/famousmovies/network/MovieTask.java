@@ -3,7 +3,6 @@ package br.com.andersonv.famousmovies.network;
 
 import android.os.AsyncTask;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,10 +38,9 @@ public class MovieTask extends AsyncTask<String, Void, List<Movie>> {
         }
 
         try {
-            Movies movies = new Movies();
-            movies = call.execute().body();
 
-            return movies.getMovies();
+            return call.execute().body().getMovies();
+
         } catch (Exception e) {
             e.printStackTrace();
             return null;
