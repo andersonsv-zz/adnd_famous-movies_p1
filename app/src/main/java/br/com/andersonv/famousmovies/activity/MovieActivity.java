@@ -140,12 +140,9 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
 
             snackbar.show();*/
         }else {
-            final String apiKey = getResources().getString(R.string.moviedb);
-
-            locale = Locale.getDefault().toString().replace("_", "-");
 
             mLoadingIndicator.setVisibility(View.VISIBLE);
-            MovieTask task = new MovieTask(MovieActivity.this, movieSearch, 1, locale, apiKey);
+            MovieTask task = new MovieTask(MovieActivity.this, movieSearch, 1);
             task.execute();
         }
     }

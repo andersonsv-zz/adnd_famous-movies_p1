@@ -26,8 +26,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.Scanner;
 
+import br.com.andersonv.famousmovies.BuildConfig;
 import br.com.andersonv.famousmovies.data.MovieSearch;
 
 
@@ -43,11 +45,13 @@ public final class NetworkUtils {
     private static final String URL_MOVIES_TOP_RATED = URL_MOVIES + TOP_RATED;
     private static final String URL_MOVIES_POPULAR = URL_MOVIES + POPULAR;
 
-    private static Uri buildUri(String url, int page, String locale, String apiKey) {
+    private static Uri buildUri(String url, int page) {
+        String locale = Locale.getDefault().toString().replace("_", "-");
+
         Uri builtUri = Uri.parse(url).buildUpon()
                 .appendQueryParameter(LANGUAGE_PARAM, locale)
                 .appendQueryParameter(PAGE_PARAM, Integer.toString(page))
-                .appendQueryParameter(API_KEY_PARAM, apiKey)
+                .appendQueryParameter(API_KEY_PARAM, BuildConfig.API_MOVIE_DB_KEY)
                 .build();
 
         Log.d(TAG, "builtURI" + builtUri.toString());
@@ -68,15 +72,14 @@ public final class NetworkUtils {
         return url;
     }
 
-    public static URL buildMovies(MovieSearch movieSearch, int page, String locale, String apiKey) {
-
+    public static URL buildMovies(MovieSearch movieSearch, int page){
         String search = URL_MOVIES_TOP_RATED;
 
         if (MovieSearch.MOST_POPULAR.equals(movieSearch)) {
             search = URL_MOVIES_POPULAR;
         }
 
-        Uri builtUri = buildUri(search, page, locale, apiKey);
+        Uri builtUri = buildUri(search, page);
         return buildURL(builtUri);
     }
 

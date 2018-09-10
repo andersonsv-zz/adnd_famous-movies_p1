@@ -6,7 +6,9 @@ import android.os.AsyncTask;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import br.com.andersonv.famousmovies.BuildConfig;
 import br.com.andersonv.famousmovies.data.Movie;
 import br.com.andersonv.famousmovies.data.MovieSearch;
 import br.com.andersonv.famousmovies.util.MovieJsonUtils;
@@ -19,15 +21,11 @@ public class MovieTask extends AsyncTask<String, Void, List<Movie>> {
     private OnTaskCompleted taskCompleted;
     private MovieSearch movieSearch;
     private Integer page;
-    private String locale;
-    private String apiKey;
 
-    public MovieTask(OnTaskCompleted activityContext, final MovieSearch movieSearch, final Integer page, final String locale, final String apiKey) {
+    public MovieTask(OnTaskCompleted activityContext, final MovieSearch movieSearch, final Integer page) {
         this.taskCompleted = activityContext;
         this.movieSearch = movieSearch;
         this.page = page;
-        this.locale = locale;
-        this.apiKey = apiKey;
     }
 
     @Override
@@ -38,7 +36,7 @@ public class MovieTask extends AsyncTask<String, Void, List<Movie>> {
     @Override
     protected List<Movie> doInBackground(String... params) {
 
-        URL movieRequestUrl = NetworkUtils.buildMovies(movieSearch, page, locale, apiKey);
+        URL movieRequestUrl = NetworkUtils.buildMovies(movieSearch, page);
         try {
             String jsonWeatherResponse = NetworkUtils
                     .getResponseFromHttpUrl(movieRequestUrl);
