@@ -58,16 +58,21 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         setContentView(R.layout.activity_movie);
 
         ButterKnife.bind(this);
+        context = this;
 
         this.setTitle(R.string.top_rated);
 
         if (savedInstanceState == null || !savedInstanceState.containsKey(SAVE_STATE_OBJECT_NAME)) {
             movies = new ArrayList<>(movies);
+            loadMovieData(MovieSearch.TOP_RATED);
         } else {
             movies = savedInstanceState.getParcelableArrayList(SAVE_STATE_OBJECT_NAME);
-        }
 
-        context = this;
+            MovieRecyclerViewAdapter adapter = new MovieRecyclerViewAdapter(context, movies, MovieActivity.this);
+            rvMovies.setAdapter(adapter);
+            showMovieDataView();
+
+        }
 
         //code copied from https://stackoverflow.com/questions/33575731/gridlayoutmanager-how-to-auto-fit-columns
         int mNoOfColumns = UiUtils.calculateNoOfColumns(getApplicationContext());
@@ -75,8 +80,6 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
 
         rvMovies.setLayoutManager(glm);
         rvMovies.setHasFixedSize(true);
-
-        loadMovieData(MovieSearch.TOP_RATED);
     }
 
     @Override
@@ -166,11 +169,12 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
     @Override
     public void onTaskCompleted(List<Movie> response) {
         mLoadingIndicator.setVisibility(View.INVISIBLE);
+        movies = response;
 
         if (response != null) {
             showMovieDataView();
 
-            MovieRecyclerViewAdapter adapter = new MovieRecyclerViewAdapter(context, response, MovieActivity.this);
+            MovieRecyclerViewAdapter adapter = new MovieRecyclerViewAdapter(context, movies, MovieActivity.this);
             rvMovies.setAdapter(adapter);
 
         } else {
