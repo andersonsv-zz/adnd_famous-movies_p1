@@ -4,14 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,6 +27,7 @@ import br.com.andersonv.famousmovies.data.MovieSearch;
 import br.com.andersonv.famousmovies.network.MovieTask;
 import br.com.andersonv.famousmovies.network.OnTaskCompleted;
 import br.com.andersonv.famousmovies.util.NetworkUtils;
+import br.com.andersonv.famousmovies.util.UiUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -42,6 +46,10 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
     ProgressBar mLoadingIndicator;
     @BindView(R.id.rvMovies)
     RecyclerView rvMovies;
+
+    @BindView(R.id.parentMovieActivity)
+    RelativeLayout movieActivity;
+
 
     private List<Movie> movies = new ArrayList<>();
     private Context context;
@@ -62,7 +70,12 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         }
 
         context = this;
-        rvMovies.setLayoutManager(new GridLayoutManager(this, NUMBER_OF_COLUMS));
+
+        //code copied from https://stackoverflow.com/questions/33575731/gridlayoutmanager-how-to-auto-fit-columns
+        int mNoOfColumns = UiUtils.calculateNoOfColumns(getApplicationContext());
+        GridLayoutManager glm = new GridLayoutManager(this, mNoOfColumns);
+
+        rvMovies.setLayoutManager(glm);
         rvMovies.setHasFixedSize(true);
 
         loadMovieData(MovieSearch.TOP_RATED);
@@ -111,7 +124,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
-    private void loadMovieData(MovieSearch movieSearch) {
+    private void loadMovieData(final MovieSearch movieSearch) {
 
         showMovieDataView();
 
@@ -123,15 +136,15 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
             mLlInternetAccessError.setVisibility(View.VISIBLE);
             mErrorMessageDisplay.setVisibility(View.INVISIBLE);
 
-        /*  Snackbar snackbar = Snackbar.make(this, R.string.offline_no_internet, Snackbar.LENGTH_LONG)
+            Snackbar snackbar = Snackbar.make(movieActivity, R.string.offline_no_internet, Snackbar.LENGTH_LONG)
                   .setAction(R.string.offline_no_internet_retry, new View.OnClickListener() {
                       @Override
                       public void onClick(View view) {
-
+                          loadMovieData(movieSearch);
                       }
                   });
+            snackbar.show();
 
-            snackbar.show();*/
         } else {
             mLoadingIndicator.setVisibility(View.VISIBLE);
             MovieTask task = new MovieTask(MovieActivity.this, movieSearch, 1);
