@@ -135,12 +135,12 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
             mErrorMessageDisplay.setVisibility(View.INVISIBLE);
 
             Snackbar snackbar = Snackbar.make(movieActivity, R.string.offline_no_internet, Snackbar.LENGTH_LONG)
-                  .setAction(R.string.offline_no_internet_retry, new View.OnClickListener() {
-                      @Override
-                      public void onClick(View view) {
-                          loadMovieData(movieSearch);
-                      }
-                  });
+                    .setAction(R.string.offline_no_internet_retry, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            loadMovieData(movieSearch);
+                        }
+                    });
             snackbar.show();
 
         } else {
