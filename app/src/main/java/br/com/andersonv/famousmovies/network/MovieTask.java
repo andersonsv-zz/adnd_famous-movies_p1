@@ -3,18 +3,18 @@ package br.com.andersonv.famousmovies.network;
 
 import android.os.AsyncTask;
 
-import java.net.URL;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import br.com.andersonv.famousmovies.BuildConfig;
 import br.com.andersonv.famousmovies.data.Movie;
 import br.com.andersonv.famousmovies.data.MovieSearch;
-import br.com.andersonv.famousmovies.util.MovieJsonUtils;
-import br.com.andersonv.famousmovies.util.NetworkUtils;
+import br.com.andersonv.famousmovies.data.Movies;
+import retrofit2.Call;
 
 public class MovieTask extends AsyncTask<String, Void, List<Movie>> {
-
-    List<Movie> movies = new ArrayList<>();
 
     private OnTaskCompleted taskCompleted;
     private MovieSearch movieSearch;
@@ -33,17 +33,20 @@ public class MovieTask extends AsyncTask<String, Void, List<Movie>> {
 
     @Override
     protected List<Movie> doInBackground(String... params) {
+        String locale = Locale.getDefault().toString().replace("_", "-");
 
-        URL movieRequestUrl = NetworkUtils.buildMovies(movieSearch, page);
+        MovieService service = RetrofitClientInstance.getRetrofitInstance().create(MovieService.class);
+        Call<Movies> call;
+
+        if (MovieSearch.TOP_RATED.equals(movieSearch)) {
+            call = service.getTopRated(page, locale, BuildConfig.API_MOVIE_DB_KEY);
+        } else {
+            call = service.getPopular(page, locale, BuildConfig.API_MOVIE_DB_KEY);
+        }
+
         try {
-            String jsonWeatherResponse = NetworkUtils
-                    .getResponseFromHttpUrl(movieRequestUrl);
-
-            movies = MovieJsonUtils.getMovieStringsFromJson(jsonWeatherResponse);
-
-            return movies;
-
-        } catch (Exception e) {
+            return call.execute().body().getMovies();
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }

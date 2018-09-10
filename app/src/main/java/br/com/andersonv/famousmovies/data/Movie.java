@@ -4,6 +4,8 @@ package br.com.andersonv.famousmovies.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Movie implements Parcelable {
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
         @Override
@@ -16,19 +18,26 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
-    //id
+
+    @SerializedName("id")
     private final Long id;
-    //post_path
+
+    @SerializedName("poster_path")
     private final String posterPath;
-    //title
+
+    @SerializedName("title")
     private final String title;
-    //backdrop_path
+
+    @SerializedName("backdrop_path")
     private final String backdropPath;
-    //release_date
+
+    @SerializedName("release_date")
     private final String releaseDate;
-    //overview
+
+    @SerializedName("overview")
     private final String overview;
-    //vote_average
+
+    @SerializedName("vote_average")
     private final Double voteAverage;
 
     public Movie(Long id, String posterPath, String title, String backdropPath, String releaseDate, String overview, Double voteAverage) {

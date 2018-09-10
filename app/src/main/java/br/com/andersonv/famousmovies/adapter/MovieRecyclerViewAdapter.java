@@ -25,7 +25,6 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     private final LayoutInflater mInflater;
     private final MovieRecyclerOnClickHandler mClickHandler;
 
-    //
     public MovieRecyclerViewAdapter(Context context, List<Movie> data, MovieRecyclerOnClickHandler clickHandler) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
@@ -40,7 +39,6 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         return new ViewHolder(view);
     }
 
-    // binds the data to the TextView in each cell
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Movie movie = mData.get(position);
@@ -61,7 +59,8 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.ivMovieImage) ImageView ivMovieImage;
+        @BindView(R.id.ivMovieImage)
+        ImageView ivMovieImage;
 
         ViewHolder(View itemView) {
             super(itemView);

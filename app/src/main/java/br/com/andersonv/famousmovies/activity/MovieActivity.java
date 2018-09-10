@@ -66,9 +66,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         rvMovies.setHasFixedSize(true);
 
         loadMovieData(MovieSearch.TOP_RATED);
-
     }
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -99,7 +97,6 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
 
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -126,8 +123,6 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
             mLlInternetAccessError.setVisibility(View.VISIBLE);
             mErrorMessageDisplay.setVisibility(View.INVISIBLE);
 
-
-
         /*  Snackbar snackbar = Snackbar.make(this, R.string.offline_no_internet, Snackbar.LENGTH_LONG)
                   .setAction(R.string.offline_no_internet_retry, new View.OnClickListener() {
                       @Override
@@ -138,7 +133,6 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
 
             snackbar.show();*/
         } else {
-
             mLoadingIndicator.setVisibility(View.VISIBLE);
             MovieTask task = new MovieTask(MovieActivity.this, movieSearch, 1);
             task.execute();
