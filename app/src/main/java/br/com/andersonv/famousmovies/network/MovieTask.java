@@ -43,7 +43,7 @@ public class MovieTask extends AsyncTask<String, Void, List<Movie>> {
             movies = call.execute().body();
 
             return movies.getMovies();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
