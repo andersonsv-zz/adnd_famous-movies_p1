@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,22 +27,23 @@ import br.com.andersonv.famousmovies.util.NetworkUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MovieActivity extends AppCompatActivity implements MovieRecyclerViewAdapter.MovieRecyclerOnClickHandler, OnTaskCompleted{
+public class MovieActivity extends AppCompatActivity implements MovieRecyclerViewAdapter.MovieRecyclerOnClickHandler, OnTaskCompleted {
 
     //component config
     private static final int NUMBER_OF_COLUMS = 2;
     private static final String SAVE_STATE_OBJECT_NAME = "movies";
-    private String locale;
+
+    //components
+    @BindView(R.id.tvErrorMessage)
+    TextView mErrorMessageDisplay;
+    @BindView(R.id.llInternetAccessError)
+    LinearLayout mLlInternetAccessError;
+    @BindView(R.id.pbIndicador)
+    ProgressBar mLoadingIndicator;
+    @BindView(R.id.rvMovies)
+    RecyclerView rvMovies;
 
     private List<Movie> movies = new ArrayList<>();
-    //components
-
-
-    @BindView(R.id.tvErrorMessage) TextView mErrorMessageDisplay;
-    @BindView(R.id.llInternetAccessError) LinearLayout mLlInternetAccessError;
-    @BindView(R.id.pbIndicador) ProgressBar mLoadingIndicator;
-    @BindView(R.id.rvMovies) RecyclerView rvMovies;
-
     private Context context;
 
     @Override
@@ -122,7 +122,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         rvMovies.setAdapter(null);
 
         //check internet access
-        if(!NetworkUtils.isNetworkConnected(this)) {
+        if (!NetworkUtils.isNetworkConnected(this)) {
             mLlInternetAccessError.setVisibility(View.VISIBLE);
             mErrorMessageDisplay.setVisibility(View.INVISIBLE);
 
@@ -137,7 +137,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
                   });
 
             snackbar.show();*/
-        }else {
+        } else {
 
             mLoadingIndicator.setVisibility(View.VISIBLE);
             MovieTask task = new MovieTask(MovieActivity.this, movieSearch, 1);

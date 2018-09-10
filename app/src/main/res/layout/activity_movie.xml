@@ -21,27 +21,28 @@
         android:id="@+id/tvErrorMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/error_message_list"/>
+        android:text="@string/error_message_list" />
 
     <LinearLayout
+        android:id="@+id/llInternetAccessError"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/llInternetAccessError"
-        android:orientation="vertical"
         android:gravity="center|center_horizontal|center_vertical"
+        android:orientation="vertical"
         android:visibility="invisible">
 
         <TextView
-            android:text="@string/offline"
-            style="@style/Offline"/>
+            style="@style/Offline"
+            android:text="@string/offline" />
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/ic_local_movies_black_24dp"/>
+            android:src="@drawable/ic_local_movies_black_24dp"
+            android:contentDescription="@string/content_description_img_offline"/>
 
         <TextView
             style="@style/OfflineMsg"
-            android:text="@string/offline_msg"/>
+            android:text="@string/offline_msg" />
     </LinearLayout>
 </RelativeLayout>

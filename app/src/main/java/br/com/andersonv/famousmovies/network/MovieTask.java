@@ -6,9 +6,7 @@ import android.os.AsyncTask;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-import br.com.andersonv.famousmovies.BuildConfig;
 import br.com.andersonv.famousmovies.data.Movie;
 import br.com.andersonv.famousmovies.data.MovieSearch;
 import br.com.andersonv.famousmovies.util.MovieJsonUtils;

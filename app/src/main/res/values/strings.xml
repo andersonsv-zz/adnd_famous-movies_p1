@@ -5,7 +5,7 @@
     <string name="top_rated">Top rated</string>
     <string name="content_description_img_ivBackdrop">Backdrop image from movie</string>
     <string name="content_description_img_ivPoster">Poster image from movie</string>
-
+    <string name="content_description_img_offline">Error image reporting without internet</string>
 
     <string name="offline">Offline</string>
     <string name="offline_msg">Check your internet connection and try again.</string>

@@ -4,7 +4,18 @@ package br.com.andersonv.famousmovies.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Movie implements  Parcelable {
+public class Movie implements Parcelable {
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
     //id
     private final Long id;
     //post_path
@@ -39,18 +50,6 @@ public class Movie implements  Parcelable {
         this.overview = in.readString();
         this.voteAverage = in.readDouble();
     }
-
-    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
-        @Override
-        public Movie createFromParcel(Parcel in) {
-            return new Movie(in);
-        }
-
-        @Override
-        public Movie[] newArray(int size) {
-            return new Movie[size];
-        }
-    };
 
     @Override
     public int describeContents() {

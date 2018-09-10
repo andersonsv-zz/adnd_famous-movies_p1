@@ -72,7 +72,7 @@ public final class NetworkUtils {
         return url;
     }
 
-    public static URL buildMovies(MovieSearch movieSearch, int page){
+    public static URL buildMovies(MovieSearch movieSearch, int page) {
         String search = URL_MOVIES_TOP_RATED;
 
         if (MovieSearch.MOST_POPULAR.equals(movieSearch)) {

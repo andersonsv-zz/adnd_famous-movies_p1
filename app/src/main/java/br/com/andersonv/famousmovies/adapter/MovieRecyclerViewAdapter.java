@@ -15,6 +15,8 @@ import java.util.List;
 
 import br.com.andersonv.famousmovies.R;
 import br.com.andersonv.famousmovies.data.Movie;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecyclerViewAdapter.ViewHolder> {
 
@@ -23,9 +25,6 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     private final LayoutInflater mInflater;
     private final MovieRecyclerOnClickHandler mClickHandler;
 
-    public interface MovieRecyclerOnClickHandler {
-        void onClick(Movie movie);
-    }
     //
     public MovieRecyclerViewAdapter(Context context, List<Movie> data, MovieRecyclerOnClickHandler clickHandler) {
         this.mInflater = LayoutInflater.from(context);
@@ -33,11 +32,11 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         this.mClickHandler = clickHandler;
     }
 
-
     @Override
     @NonNull
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.movie_item, parent, false);
+
         return new ViewHolder(view);
     }
 
@@ -56,21 +55,25 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         return mData.size();
     }
 
+    public interface MovieRecyclerOnClickHandler {
+        void onClick(Movie movie);
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        final ImageView ivMovieImage;
+
+        @BindView(R.id.ivMovieImage) ImageView ivMovieImage;
 
         ViewHolder(View itemView) {
             super(itemView);
-            ivMovieImage = itemView.findViewById(R.id.ivMovieImage);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-                int adapterPosition = getAdapterPosition();
-                Movie movie = mData.get(adapterPosition);
-                mClickHandler.onClick(movie);
+            int adapterPosition = getAdapterPosition();
+            Movie movie = mData.get(adapterPosition);
+            mClickHandler.onClick(movie);
         }
     }
 }
