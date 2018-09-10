@@ -2,13 +2,12 @@ package br.com.andersonv.famousmovies.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,10 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import br.com.andersonv.famousmovies.R;
 import br.com.andersonv.famousmovies.adapter.MovieRecyclerViewAdapter;
@@ -27,8 +24,9 @@ import br.com.andersonv.famousmovies.data.Movie;
 import br.com.andersonv.famousmovies.data.MovieSearch;
 import br.com.andersonv.famousmovies.network.MovieTask;
 import br.com.andersonv.famousmovies.network.OnTaskCompleted;
-import br.com.andersonv.famousmovies.util.MovieJsonUtils;
 import br.com.andersonv.famousmovies.util.NetworkUtils;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MovieActivity extends AppCompatActivity implements MovieRecyclerViewAdapter.MovieRecyclerOnClickHandler, OnTaskCompleted{
 
@@ -39,10 +37,13 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
 
     private List<Movie> movies = new ArrayList<>();
     //components
-    private TextView mErrorMessageDisplay;
-    private LinearLayout mLlInternetAccessError;
-    private ProgressBar mLoadingIndicator;
-    private RecyclerView rvMovies;
+
+
+    @BindView(R.id.tvErrorMessage) TextView mErrorMessageDisplay;
+    @BindView(R.id.llInternetAccessError) LinearLayout mLlInternetAccessError;
+    @BindView(R.id.pbIndicador) ProgressBar mLoadingIndicator;
+    @BindView(R.id.rvMovies) RecyclerView rvMovies;
+
     private Context context;
 
     @Override
@@ -50,12 +51,9 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
 
-        this.setTitle(R.string.top_rated);
+        ButterKnife.bind(this);
 
-        mLoadingIndicator = findViewById(R.id.pbIndicador);
-        rvMovies = findViewById(R.id.rvMovies);
-        mErrorMessageDisplay = findViewById(R.id.tvErrorMessage);
-        mLlInternetAccessError = findViewById(R.id.llInternetAccessError);
+        this.setTitle(R.string.top_rated);
 
         if (savedInstanceState == null || !savedInstanceState.containsKey(SAVE_STATE_OBJECT_NAME)) {
             movies = new ArrayList<>(movies);
@@ -128,15 +126,15 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
             mLlInternetAccessError.setVisibility(View.VISIBLE);
             mErrorMessageDisplay.setVisibility(View.INVISIBLE);
 
-          /*  Snackbar snackbar = Snackbar.
-                    .make(, "Message is deleted", Snackbar.LENGTH_LONG)
-                    .setAction("UNDO", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Message is restored!", Snackbar.LENGTH_SHORT);
-                            snackbar1.show();
-                        }
-                    });
+
+
+        /*  Snackbar snackbar = Snackbar.make(this, R.string.offline_no_internet, Snackbar.LENGTH_LONG)
+                  .setAction(R.string.offline_no_internet_retry, new View.OnClickListener() {
+                      @Override
+                      public void onClick(View view) {
+
+                      }
+                  });
 
             snackbar.show();*/
         }else {
@@ -174,56 +172,4 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
             showErrorMessage();
         }
     }
-
-    /*private class MovieTask extends AsyncTask<String, Void, List<Movie>> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mLoadingIndicator.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected List<Movie> doInBackground(String... params) {
-
-            if (params.length == 0) {
-                return null;
-            }
-
-            MovieSearch movieSearch = MovieSearch.valueOf(params[0]);
-            Integer page = Integer.parseInt(params[1]);
-            String locale = params[2];
-            String apiKey = params[3];
-
-            URL movieRequestUrl = NetworkUtils.buildMovies(movieSearch, page, locale, apiKey);
-            try {
-                String jsonWeatherResponse = NetworkUtils
-                        .getResponseFromHttpUrl(movieRequestUrl);
-
-                movies = MovieJsonUtils.getMovieStringsFromJson(jsonWeatherResponse);
-
-                return movies;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<Movie> moviesData) {
-
-            mLoadingIndicator.setVisibility(View.INVISIBLE);
-
-            if (moviesData != null) {
-                showMovieDataView();
-
-                MovieRecyclerViewAdapter adapter = new MovieRecyclerViewAdapter(context, moviesData, MovieActivity.this);
-                rvMovies.setAdapter(adapter);
-
-            } else {
-                showErrorMessage();
-            }
-        }
-    }*/
 }

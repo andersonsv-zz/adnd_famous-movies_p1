@@ -10,4 +10,7 @@
     <string name="offline">Sem internet</string>
     <string name="offline_msg">Verifique sua conexão com a internet e tente novamente</string>
 
+    <string name="offline_no_internet">Sem internet?</string>
+    <string name="offline_no_internet_retry">Tente novamente</string>
+
 </resources>
