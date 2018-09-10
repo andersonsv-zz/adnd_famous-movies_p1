@@ -4,7 +4,6 @@ package br.com.andersonv.famousmovies.network;
 import android.os.AsyncTask;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -16,19 +15,14 @@ import retrofit2.Call;
 
 public class MovieTask extends AsyncTask<String, Void, List<Movie>> {
 
-    private OnTaskCompleted taskCompleted;
-    private MovieSearch movieSearch;
-    private Integer page;
+    private final OnTaskCompleted taskCompleted;
+    private final MovieSearch movieSearch;
+    private final Integer page;
 
     public MovieTask(OnTaskCompleted activityContext, final MovieSearch movieSearch, final Integer page) {
         this.taskCompleted = activityContext;
         this.movieSearch = movieSearch;
         this.page = page;
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
     }
 
     @Override
@@ -45,7 +39,10 @@ public class MovieTask extends AsyncTask<String, Void, List<Movie>> {
         }
 
         try {
-            return call.execute().body().getMovies();
+            Movies movies = new Movies();
+            movies = call.execute().body();
+
+            return movies.getMovies();
         } catch (IOException e) {
             e.printStackTrace();
             return null;

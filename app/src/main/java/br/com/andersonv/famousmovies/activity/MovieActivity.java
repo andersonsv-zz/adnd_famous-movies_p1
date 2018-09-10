@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -34,7 +33,6 @@ import butterknife.ButterKnife;
 public class MovieActivity extends AppCompatActivity implements MovieRecyclerViewAdapter.MovieRecyclerOnClickHandler, OnTaskCompleted {
 
     //component config
-    private static final int NUMBER_OF_COLUMS = 2;
     private static final String SAVE_STATE_OBJECT_NAME = "movies";
 
     //components

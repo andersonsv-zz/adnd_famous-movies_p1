@@ -40,16 +40,6 @@ public class Movie implements Parcelable {
     @SerializedName("vote_average")
     private final Double voteAverage;
 
-    public Movie(Long id, String posterPath, String title, String backdropPath, String releaseDate, String overview, Double voteAverage) {
-        this.id = id;
-        this.posterPath = posterPath;
-        this.title = title;
-        this.backdropPath = backdropPath;
-        this.releaseDate = releaseDate;
-        this.overview = overview;
-        this.voteAverage = voteAverage;
-    }
-
     private Movie(Parcel in) {
         this.id = in.readLong();
         this.posterPath = in.readString();

@@ -3,7 +3,7 @@ package br.com.andersonv.famousmovies.network;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RetrofitClientInstance {
+class RetrofitClientInstance {
 
     private static final String BASE_URL = "https://api.themoviedb.org/";
     private static Retrofit retrofit;
