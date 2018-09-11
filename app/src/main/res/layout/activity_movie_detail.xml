@@ -1,64 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".activity.MovieActivity">
+    android:padding="10dp"
+    android:fillViewport="false">
 
-    <!-- image of movies -->
-    <ImageView
-        android:id="@+id/ivBackdrop"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="210dp"
-        android:contentDescription="@string/content_description_img_ivBackdrop"
-        android:scaleType="centerCrop" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <!-- thumb, name, rate, date -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
+        <!-- image of movies -->
         <ImageView
-            android:id="@+id/ivPoster"
-            android:layout_width="90dp"
-            android:layout_height="140dp"
-            android:layout_margin="10dp"
-            android:contentDescription="@string/content_description_img_ivPoster"
+            android:id="@+id/ivBackdrop"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:contentDescription="@string/content_description_img_ivBackdrop"
             android:scaleType="centerCrop" />
 
+        <!-- thumb, name, rate, date -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical"
-            android:weightSum="1">
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tvTitle"
-                style="@style/Base.TextAppearance.AppCompat.Headline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/ivPoster"
+                android:layout_width="90dp"
+                android:layout_height="140dp"
+                android:layout_margin="10dp"
+                android:contentDescription="@string/content_description_img_ivPoster"
+                android:scaleType="centerCrop" />
 
-            <TextView
-                android:id="@+id/tvRelease"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
-
-            <TextView
-                android:id="@+id/tvVoteAverage"
-                style="@style/Base.TextAppearance.AppCompat.Large"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp" />
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    style="@style/Base.TextAppearance.AppCompat.Headline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tvRelease"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" />
+
+                <TextView
+                    android:id="@+id/tvVoteAverage"
+                    style="@style/Base.TextAppearance.AppCompat.Large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tvOverview"
@@ -68,6 +71,5 @@
             android:layout_margin="5dp"
             android:gravity="start" />
 
-    </ScrollView>
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
